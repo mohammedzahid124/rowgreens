@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #FFFFFF;
+  --color-foreground: #171717;
+  --color-brand-primary: #2E7D32;
+  --color-brand-accent: #66BB6A;
+  --color-brand-soft: #F6FBF7;
+
+  --font-sans: var(--font-geist-sans), Inter, "SF Pro Display", -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+}
+
+:root {
+  --background: #FFFFFF;
+  --foreground: #171717;
+}
+
+/* RESET (VERY IMPORTANT for full screen) */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100vw;
+  min-height: 100vh;
+  min-width: 100vw;
+  overflow-x: hidden;
+  background: var(--background);
+}
+
+/* BODY */
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography */
+.tracking-tight {
+  letter-spacing: -0.02em;
+}
+
+.tracking-tighter {
+  letter-spacing: -0.04em;
+}
+
+/* SCROLL SETTINGS (merged properly) */
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior-y: none;
+}
+
+/* Snap sections */
+
+.snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  height: 100vh !important;
+  min-height: 100vh !important;
+  width: 100vw !important;
+  min-width: 100vw !important;
+  box-sizing: border-box;
+}
+
+/* Scrollbar (optional clean look) */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}
