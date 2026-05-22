@@ -20,8 +20,7 @@ function GrowRowText() {
       />
 
       {/* TEXT */}
-      <div className="flex items-center justify-center text-6xl md:text-8xl font-bold tracking-tight text-white">
-
+<div className="flex flex-col md:flex-row items-center justify-center text-5xl md:text-8xl font-bold tracking-tight text-white leading-tight text-center">
         {/* LEFT */}
         <motion.span
           initial={{ opacity: 0, x: "0.5em" }}
@@ -32,8 +31,7 @@ function GrowRowText() {
         </motion.span>
 
         {/* SPACE */}
-        <span className="mx-3" />
-
+<span className="hidden md:block mx-3" />
         {/* RIGHT */}
         <motion.span
           initial={{ opacity: 0, x: "-0.5em" }}

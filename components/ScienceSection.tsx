@@ -1,189 +1,206 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const SCIENCE_CONCEPTS = [
+const ITEMS = [
   {
-    id: 0,
     title: "pH Balance",
-    description: "Self-correcting micro-biomes maintain the perfect 6.0-6.5 pH window, ensuring maximum nutrient availability without chemical buffers.",
-    theme: {
-      bg: "#e0f2fe",
-      accent: "#0284c7",
-      gradient: "linear-gradient(to bottom right, #f0f9ff, #bae6fd)"
-    }
+    description:
+      "Self-correcting micro-biomes maintain the perfect 6.0–6.5 pH window for optimal nutrient absorption.",
+       color: "#0ea5e9",
+        bg: "linear-gradient(180deg, #e0f2fe 0%, #f0fdf4 100%)",
+    image: "/ph-balance.jpg",
   },
   {
-    id: 1,
     title: "Dissolved Oxygen",
-    description: "Hyper-aeration zones create micro-bubbles, elevating DO levels to hyper-saturate root zones and prevent decay.",
-    theme: {
-      bg: "#ecfdf5",
-      accent: "#059669",
-      gradient: "linear-gradient(to bottom right, #f2fbf5, #a7f3d0)"
-    }
+    description:
+      "Hyper-aeration zones create micro-bubbles that sustain elevated oxygen levels throughout the system.",
+      color: "#10b981",
+      bg: "linear-gradient(180deg, #ecfdf5 0%, #f0fdf4 100%)",
+    image: "/dissolved-oxygen.png",
   },
   {
-    id: 2,
     title: "Beneficial Bacteria",
-    description: "A synthesized layer of Nitrosomonas and Nitrobacter species act as the living engine of our bio-active soil arrays.",
-    theme: {
-      bg: "#fffbeb",
-      accent: "#d97706",
-      gradient: "linear-gradient(to bottom right, #fefce8, #fde68a)"
-    }
+    description:
+      "Living microbial layers drive the entire bio-active nitrogen cycle inside every unit.",
+       color: "#f59e0b",
+       bg: "linear-gradient(180deg, #fffbeb 0%, #fefce8 100%)",
+    image: "/goodbacteria.jpg",
   },
   {
-    id: 3,
     title: "Nutrient Cycle",
-    description: "Complete elemental breakdown loops driven by nature to unlock complex organic compounds perfectly.",
-    theme: {
-      bg: "#f4f4f5",
-      accent: "#52525b",
-      gradient: "linear-gradient(to bottom right, #fafafa, #e4e4e7)"
-    }
+    description:
+      "Organic breakdown loops unlock macro and micro nutrients naturally — zero synthetic inputs.",
+      color: "#8b5cf6",
+      bg: "linear-gradient(180deg, #f5f3ff 0%, #faf5ff 100%)",
+    image: "/nitrogen.png",
   },
   {
-    id: 4,
-    title: "Water Flow Systems",
-    description: "Biomimetic capillary structures mirror natural aquifers, efficiently cycling water upward against gravity.",
-    theme: {
-      bg: "#eff6ff",
-      accent: "#2563eb",
-      gradient: "linear-gradient(to bottom right, #f8fafc, #bfdbfe)"
-    }
+    title: "Water Flow",
+    description:
+      "Biomimetic circulation structures move water exactly as natural aquifers do — silently and efficiently.",
+      color: "#3b82f6",
+      bg: "linear-gradient(180deg, #eff6ff 0%, #f0fdf4 100%)",
+    image: "/waterflow-system.png",
   },
   {
-    id: 5,
     title: "Root Oxygenation",
-    description: "Suspended misting matrices ensure root tips are constantly coated in nutrient-dense moisture without suffocating.",
-    theme: {
-      bg: "#fce7f3",
-      accent: "#db2777",
-      gradient: "linear-gradient(to bottom right, #fdf2f8, #fbcfe8)"
-    }
-  }
+    description:
+      "Precision mist systems keep roots in a perfect oxygen-rich zone without waterlogging.",
+      color: "#ef4444",
+       bg: "linear-gradient(180deg, #fef2f2 0%, #fff7ed 100%)",
+    image: "/root-oxygenation.png",
+  },
 ];
 
 export default function ScienceSection() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [active, setActive] = useState(0);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const total = ITEMS.length;
+  const item = ITEMS[active];
+
+  const resetTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setActive((prev) => (prev + 1) % total);
+    }, 4000);
+  }, [total]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % SCIENCE_CONCEPTS.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+    resetTimer();
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [resetTimer]);
 
-  const activeItem = SCIENCE_CONCEPTS[activeIndex];
+  const next = () => {
+    setActive((prev) => (prev + 1) % total);
+    resetTimer();
+  };
+
+  const prev = () => {
+    setActive((prev) => (prev - 1 + total) % total);
+    resetTimer();
+  };
 
   return (
     <motion.section
-      id="science"
-      animate={{ backgroundColor: activeItem.theme.bg }}
-      transition={{ duration: 1.2 }}
-      className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden snap-section"
+      className="w-full h-screen flex flex-col items-center justify-between px-6 py-10 relative overflow-hidden"
+      animate={{ background: item.bg }}
+      transition={{ duration: 0.6 }}
     >
-      {/* Background Gradient Morph */}
-      <motion.div
-        className="absolute inset-0 z-0 opacity-40 mix-blend-multiply"
-        animate={{ background: activeItem.theme.gradient }}
-        transition={{ duration: 1.2 }}
-      />
-
-      {/* Circular Visual Element */}
-      <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="relative w-64 h-64"
-        >
-          <svg
-            className="w-full h-full"
-            viewBox="0 0 200 200"
-            style={{ filter: `drop-shadow(0 0 20px ${activeItem.theme.accent})` }}
-          >
-            <circle
-              cx="100"
-              cy="100"
-              r="80"
-              fill="none"
-              stroke={activeItem.theme.accent}
-              strokeWidth="2"
-              opacity="0.3"
-            />
-            <circle
-              cx="100"
-              cy="100"
-              r="60"
-              fill="none"
-              stroke={activeItem.theme.accent}
-              strokeWidth="1.5"
-              opacity="0.2"
-            />
-            <motion.circle
-              cx="100"
-              cy="100"
-              r="40"
-              fill="none"
-              stroke={activeItem.theme.accent}
-              strokeWidth="2"
-              animate={{ strokeDasharray: [0, 251] }}
-              transition={{ duration: 5, repeat: Infinity }}
-            />
-          </svg>
-        </motion.div>
-      </div>
-
-      {/* Top Text Context */}
-      <div className="relative z-30 flex flex-col items-center px-6 text-center w-full max-w-3xl">
-        <span className="text-sm tracking-widest font-semibold uppercase text-brand-primary mb-8 block">
-          Living Mechanics
-        </span>
+      {/* ── TEXT ── */}
+      <div className="text-center max-w-2xl mt-10">
         <AnimatePresence mode="wait">
           <motion.div
-            key={activeIndex}
-            initial={{ opacity: 0, y: -10 }}
+            key={active + "-text"}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.6 }}
-            className="w-full flex flex-col items-center"
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
           >
-            <motion.h2
-              className="text-5xl md:text-7xl font-bold tracking-tighter mb-4"
-              animate={{ color: activeItem.theme.accent }}
-              transition={{ duration: 1.2 }}
-            >
-              {activeItem.title}
-            </motion.h2>
-            <p className="text-lg md:text-xl text-black/70 font-light leading-relaxed max-w-2xl">
-              {activeItem.description}
+            <span className="text-xs font-bold tracking-[0.3em] uppercase mb-3 text-green-600">
+              The Science
+            </span>
+
+            <h2
+  className="text-4xl md:text-6xl font-bold mb-4"
+  style={{ color: item.color }}
+>
+              {item.title}
+            </h2>
+
+            <p
+  className="text-base md:text-lg opacity-80"
+  style={{ color: item.color }}
+>
+              {item.description}
             </p>
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Concept dots */}
-      <div className="relative z-30 flex gap-2 mt-12 justify-center flex-wrap px-4">
-        {SCIENCE_CONCEPTS.map((item, index) => (
-          <button
-            key={item.id}
-            onClick={() => setActiveIndex(index)}
-            className="transition-all duration-300"
-            aria-label={`View ${item.title}`}
-          >
-            <span
-              className="block rounded-full transition-all duration-300"
-              style={{
-                width: index === activeIndex ? "12px" : "8px",
-                height: index === activeIndex ? "12px" : "8px",
-                background: index === activeIndex ? activeItem.theme.accent : "rgba(0,0,0,0.2)",
-                boxShadow: index === activeIndex ? `0 0 12px ${activeItem.theme.accent}` : "none",
-              }}
-            />
-          </button>
-        ))}
+{/* ── CENTER IMAGE WITH 70% CIRCLE ── */}
+<div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full flex justify-center overflow-hidden">
+
+  {/* Wrapper controls how much circle is visible */}
+  <div
+    className="relative"
+    style={{
+      width: 900,
+      height: 900, // controls visible portion (~70%)
+      overflow: "hidden",
+    }}
+  >
+
+    {/* Circle container (pushed DOWN) */}
+    <div
+      className="absolute left-1/2 -translate-x-1/2 rounded-full"
+      style={{
+        width: 800,
+        height: 750,
+        bottom: -280, // 👈 THIS creates the 60% cut effect
+      }}
+    >
+
+      {/* OUTER RING */}
+      <div className="absolute inset-0 rounded-full border style={{
+  border: `1px solid ${item.color}33`
+}} opacity-40" />
+
+      {/* INNER RING (tight gap) */}
+      <div className="absolute inset-[8px] rounded-full border style={{
+  border: `1px solid ${item.color}66`
+}} opacity-60" />
+
+      {/* IMAGE */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={active}
+          className="absolute inset-[16px] rounded-full overflow-hidden border-4 border-white shadow-2xl"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <img
+            src={item.image}
+            alt={item.title}
+            className="w-full h-full object-cover"
+          />
+
+          {/* Glow */}
+          <div
+            className="absolute inset-0 rounded-full pointer-events-none"
+            style={{
+              boxShadow: "0 0 80px boxShadow: `0 0 80px ${item.color}44`",
+            }}
+          />
+        </motion.div>
+      </AnimatePresence>
+
+    </div>
+  </div>
+</div>
+
+      {/* ── SIDE ARROWS ── */}
+      <div className="absolute inset-0 flex items-center justify-between px-6 pointer-events-none">
+        <button
+  onClick={prev}
+  className="pointer-events-auto w-12 h-12 rounded-full text-white flex items-center justify-center hover:scale-110 transition"
+  style={{ backgroundColor: item.color }}
+>
+          ←
+        </button>
+
+        <button
+  onClick={prev}
+  className="pointer-events-auto w-12 h-12 rounded-full text-white flex items-center justify-center hover:scale-110 transition"
+  style={{ backgroundColor: item.color }}
+>
+          →
+        </button>
       </div>
     </motion.section>
   );
