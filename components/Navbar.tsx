@@ -1,8 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
+import React, { useState } from "react";
+import {
+  motion,
+  useScroll,
+  useMotionValueEvent,
+  AnimatePresence,
+} from "framer-motion";
 import Link from "next/link";
+import Image from "next/image"; // <-- add this
 import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
@@ -13,7 +19,7 @@ export default function Navbar() {
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
-    // Hide navbar smoothly on scroll down, show on scroll up
+
     if (latest > previous && latest > 150) {
       setHidden(true);
     } else {
@@ -38,19 +44,29 @@ export default function Navbar() {
         transition={{ duration: 0.35, ease: "easeInOut" }}
         className="fixed top-0 inset-x-0 z-50 transition-colors duration-500 flex items-center justify-between px-6 py-4 md:px-12 md:py-6 bg-transparent"
       >
-
-        {/* LOGO PLACEHOLDER (do not style, just reserve space) */}
+        {/* LOGO */}
         <div className="flex items-center">
-          <div
-            style={{ width: 48, height: 48, background: "transparent" }}
-            aria-label="Logo Placeholder"
-          />
-          <Link href="/">
-            <span className="text-xl font-bold tracking-tighter text-white drop-shadow-md cursor-pointer hover:opacity-80 transition-opacity ml-2">
-              RowGreen.
-            </span>
-          </Link>
-        </div>
+  <Link href="/" className="flex items-center gap-0">
+    <Image
+  src="/log.png"
+  alt="RowGreens Logo"
+  width={120}
+  height={120}
+  priority
+  className="w-14 md:w-28 h-auto object-contain -mt-3"
+/>
+
+    <h1 className="text-lg md:text-3xl font-bold leading-none">
+      <span className="text-white">
+        Row
+      </span>
+
+      <span className="text-green-600 ">
+        Greens
+      </span>
+    </h1>
+  </Link>
+</div>
 
         {/* Universal Menu Toggle */}
         <div className="z-70">
@@ -74,7 +90,12 @@ export default function Navbar() {
             className="fixed top-24 right-6 md:right-12 z-60 flex flex-col items-end space-y-6 pointer-events-auto"
             variants={{
               visible: { transition: { staggerChildren: 0.1 } },
-              hidden: { transition: { staggerChildren: 0.05, staggerDirection: -1 } }
+              hidden: {
+                transition: {
+                  staggerChildren: 0.05,
+                  staggerDirection: -1,
+                },
+              },
             }}
           >
             {["Home", "Science", "Products", "About"].map((link) => (
@@ -82,10 +103,22 @@ export default function Navbar() {
                 key={link}
                 variants={{
                   hidden: { opacity: 0, y: -20, scale: 0.9 },
-                  visible: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 300, damping: 20 } }
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    transition: {
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 20,
+                    },
+                  },
                 }}
               >
-                <Link href={`#${link.toLowerCase()}`} onClick={() => setMobileMenuOpen(false)}>
+                <Link
+                  href={`#${link.toLowerCase()}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
                   <span className="text-4xl font-bold tracking-tighter text-white drop-shadow-lg hover:opacity-80 transition-opacity cursor-pointer">
                     {link}
                   </span>
