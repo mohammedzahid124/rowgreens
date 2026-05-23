@@ -85,9 +85,9 @@ function TypewriterText({ text }: { text: string }) {
   return (
     <h2
       style={{
-        fontSize: "3.2rem",
+        fontSize: "3.8rem",
         fontWeight: 600,
-        color: "#111",
+        color: "#16a34a",
         lineHeight: 1.2,
         maxWidth: "520px",
       }}
@@ -144,7 +144,7 @@ export default function AboutSection() {
 
       if (index >= WORDS.length) {
         // after last word → go to final
-        setTimeout(() => setShowFinal(true), 1200);
+        setTimeout(() => setShowFinal(true), 1700);
         return;
       }
 
@@ -174,6 +174,7 @@ export default function AboutSection() {
 
   return (
     <section
+      id="about"
       ref={sectionRef}
       className="snap-section"
       style={{
@@ -241,7 +242,7 @@ export default function AboutSection() {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            padding: "4rem",
+            padding: "4rem 0 4rem 4rem", // remove right padding
           }}
         >
           {/* LEFT → TYPEWRITER TEXT */}
@@ -270,6 +271,7 @@ export default function AboutSection() {
                 height: "85%",
                 width: "auto",
                 objectFit: "cover",
+                 marginRight: 0,
               }}
             />
           </div>

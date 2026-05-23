@@ -8,27 +8,33 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen w-full bg-white selection:bg-brand-soft selection:text-brand-primary">
+    <main className="h-screen w-full overflow-y-scroll snap-y snap-mandatory">
       {/* 0. Top Navigation */}
       <Navbar />
 
-      {/* 1. The Scroll Narrative Canvas Block */}
-      <RowGreenScroll />
+<div className="snap-start">
+  <RowGreenScroll />
+</div>
 
-      {/* 2. Structured Premium Slider */}
-      <ServicesSlider />
+<div className="snap-start">
+  <ServicesSlider />
+</div>
 
-      {/* 3. The Science of Biomimicry (Semicircle) */}
-      <ScienceSection />
+<div className="snap-start">
+  <ScienceSection />
+</div>
 
-      {/* 4. Fullscreen Video Product Stack */}
-      <ProductsSection />
+<div className="snap-start">
+  <ProductsSection />
+</div>
 
-      {/* 5. The Story Context (Emotional) */}
-      <AboutSection />
+<div className="snap-start">
+  <AboutSection />
+</div>
 
-      {/* 6. Memorable Storytelling Ending */}
-      <Footer />
+<div className="snap-start">
+  <Footer />
+</div>
     </main>
   );
 }

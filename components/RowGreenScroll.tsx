@@ -1,12 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import {
-  motion,
-  useMotionValue,
-  useTransform,
-  animate,
-} from "framer-motion";
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 
 function GrowRowText() {
   return (
@@ -20,7 +15,7 @@ function GrowRowText() {
       />
 
       {/* TEXT */}
-<div className="flex flex-col md:flex-row items-center justify-center text-5xl md:text-8xl font-bold tracking-tight text-white leading-tight text-center">
+      <div className="flex flex-col md:flex-row items-center justify-center text-5xl md:text-8xl font-bold tracking-tight text-white leading-tight text-center">
         {/* LEFT */}
         <motion.span
           initial={{ opacity: 0, x: "0.5em" }}
@@ -31,7 +26,7 @@ function GrowRowText() {
         </motion.span>
 
         {/* SPACE */}
-<span className="hidden md:block mx-3" />
+        <span className="hidden md:block mx-3" />
         {/* RIGHT */}
         <motion.span
           initial={{ opacity: 0, x: "-0.5em" }}
@@ -54,7 +49,13 @@ function GrowRowText() {
 }
 
 // 🔥 LETTER ANIMATION (anime.js style but cinematic)
-function AnimatedText({ text, className = "" }: { text: string; className?: string }) {
+function AnimatedText({
+  text,
+  className = "",
+}: {
+  text: string;
+  className?: string;
+}) {
   return (
     <div className="flex overflow-hidden">
       {text.split("").map((letter, i) => (
@@ -90,9 +91,15 @@ export default function HeroSection() {
   const maskReveal = useTransform(
     curtain,
     [0.1, 0.8],
-    ["inset(0 50% 0 50%)", "inset(0% 0% 0% 0%)"]
+    ["inset(0 50% 0 50%)", "inset(0% 0% 0% 0%)"],
   );
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  }, []);
   const opacity = useTransform(curtain, [0.1, 0.6], [0, 1]);
 
   const sectionRef = useRef<HTMLDivElement | null>(null);
@@ -121,7 +128,7 @@ export default function HeroSection() {
           obs.disconnect();
         }
       },
-      { threshold: 0.5 }
+      { threshold: 0.5 },
     );
 
     obs.observe(sectionRef.current);
@@ -130,6 +137,7 @@ export default function HeroSection() {
 
   return (
     <section
+      id="home"
       ref={sectionRef}
       className="snap-section relative h-screen w-full overflow-hidden bg-white"
     >
@@ -179,31 +187,31 @@ export default function HeroSection() {
       {showFinal && (
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.5 }}
-          className="absolute inset-0"
+          animate={{ opacity: showFinal ? 1 : 0 }}
+          transition={{ duration: 1 }}
+          className="absolute inset-0 z-0"
         >
           {/* WHITE BASE (optional fallback) */}
           <div className="absolute inset-0 bg-white z-0" />
 
           {/* VIDEO */}
           <video
+            ref={videoRef}
             className="absolute inset-0 w-full h-full object-cover z-0"
             src="/videos/green2.mp4"
             autoPlay
             muted
             loop
             playsInline
+            preload="auto"
           />
 
           {/* OVERLAY (very important for visibility) */}
           <div className="absolute inset-0 bg-black/30 z-10" />
 
-
           {/* TEXT */}
           <div className="absolute inset-0 flex items-center justify-center text-center z-10 px-6">
             <div>
-
               <GrowRowText />
             </div>
           </div>

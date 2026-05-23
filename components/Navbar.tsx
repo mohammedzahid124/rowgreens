@@ -1,5 +1,5 @@
 "use client";
-
+import FullscreenMenu from "@/components/FullscreenMenu";
 import React, { useState } from "react";
 import {
   motion,
@@ -79,55 +79,12 @@ export default function Navbar() {
           </button>
         </div>
       </motion.nav>
-
+            <FullscreenMenu
+  open={mobileMenuOpen}
+  onClose={() => setMobileMenuOpen(false)}
+/>
       {/* Floating Fluid Mobile Dropdown */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            className="fixed top-24 right-6 md:right-12 z-60 flex flex-col items-end space-y-6 pointer-events-auto"
-            variants={{
-              visible: { transition: { staggerChildren: 0.1 } },
-              hidden: {
-                transition: {
-                  staggerChildren: 0.05,
-                  staggerDirection: -1,
-                },
-              },
-            }}
-          >
-            {["Home", "Science", "Products", "About"].map((link) => (
-              <motion.div
-                key={link}
-                variants={{
-                  hidden: { opacity: 0, y: -20, scale: 0.9 },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    scale: 1,
-                    transition: {
-                      type: "spring",
-                      stiffness: 300,
-                      damping: 20,
-                    },
-                  },
-                }}
-              >
-                <Link
-                  href={`#${link.toLowerCase()}`}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <span className="text-4xl font-bold tracking-tighter text-white drop-shadow-lg hover:opacity-80 transition-opacity cursor-pointer">
-                    {link}
-                  </span>
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      
     </>
   );
 }

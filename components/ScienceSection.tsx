@@ -86,6 +86,7 @@ export default function ScienceSection() {
 
   return (
     <motion.section
+      id="science"
       className="w-full h-screen flex flex-col items-center justify-between px-6 py-10 relative overflow-hidden"
       animate={{ background: item.bg }}
       transition={{ duration: 0.6 }}
